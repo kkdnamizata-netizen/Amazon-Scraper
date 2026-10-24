@@ -1,4 +1,4 @@
-import os, re, time, random, requests, traceback
+﻿import os, re, time, random, requests, traceback
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -42,9 +42,9 @@ def create_driver():
 
 def safe_get(driver, url):
     try:
-        # Vérifier que la fenêtre Chrome est toujours ouverte
+        # VÃ©rifier que la fenÃªtre Chrome est toujours ouverte
         if not driver.window_handles:
-            errors.append("Erreur : la fenêtre Chrome est fermée.")
+            errors.append("Erreur : la fenÃªtre Chrome est fermÃ©e.")
             return False
 
         driver.get(url)
@@ -121,7 +121,7 @@ def find_subcategories(driver, category_url):
         name = a.get_text(strip=True)
 
         if href and name and "ordinateur" in name.lower():
-            link = href if href.startswith("http") else BASE_URL + href
+            link = urljoin(BASE_URL, href)
             subs.append((name, link))
 
     if not subs:
@@ -158,7 +158,7 @@ def scrape_subcategory(driver, name, url):
             break
 
         links, next_link = extract_product_links_from_search(driver)
-        print(f"{len(links)} liens produits trouvés", flush=True)
+        print(f"{len(links)} liens produits trouvÃ©s", flush=True)
 
         for link in links:
             if len(products) >= MAX_PRODUCTS:
@@ -231,4 +231,5 @@ def parse_product(driver, url, subfolder):
             errors.append(f"Erreur image {img_url}: {e}")
 
     return Product(url, asin, title, price, None, color, description, bullets, images)
+
 
